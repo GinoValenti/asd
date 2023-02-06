@@ -1,5 +1,4 @@
 let contenedorCards = document.getElementById("contenedor-cards");
-let contenedorSelect = document.getElementById("contenedor-select");
 let searchBar = document.getElementById("searchBar");
 let select = document.getElementById("pet-items-select");
 let aplicado = {};
@@ -17,7 +16,7 @@ function htmlCarta(array) {
           <p class="card-description">
             ${array.descripcion}
           </p>
-          <a ><button class="btn-comprar card-button" onclick="apreta('${array._id}')">
+          <a><button class="btn-comprar card-button" onclick="apreta('${array._id}')">
             <img
               class="btn-comprar-img"
               src="../assets/img/carritoBtn.png"
@@ -25,7 +24,7 @@ function htmlCarta(array) {
               alt="huellita"
             />
           </button></a>
-          <a ><button class="movile-button" onclick="apreta('${array._id}')"><img
+          <a><button class="movile-button" onclick="apreta('${array._id}')"><img
           class="btn-comprar-img"
           src="../assets/img/carritoBtn.png"
           height="30px"
@@ -50,7 +49,7 @@ function htmlCartaPocoStock(array) {
          <p class="card-text">
            ! Ultimas Unidades !
          </p>
-         <a><button class="btn-comprar card-button" onclick="apreta('${array._id}')">
+         <a href="#"><button class="btn-comprar card-button" onclick="apreta('${array._id}')">
            <img
              class="btn-comprar-img"
              src="../assets/img/carritoBtn.png"
@@ -58,7 +57,7 @@ function htmlCartaPocoStock(array) {
              alt="huellita"
            />
          </button>
-         <a ><button class="movile-button" onclick="apreta('${array._id}')"><img
+         <a href="#"><button class="movile-button" onclick="apreta('${array._id}')"><img
          class="btn-comprar-img"
          src="../assets/img/carritoBtn.png"
          height="30px"
@@ -94,7 +93,9 @@ function searchBarfn(evento, array) {
 function filtrarFn(especialidad, valor, array) {
   
   aplicado[especialidad] = valor;
-
+  
+  console.log(aplicado)
+  
   contenedorCards.innerHTML = "";
 
   for (let dato in aplicado) {
@@ -111,9 +112,6 @@ function filtrarFn(especialidad, valor, array) {
       if(aplicado["datoPorSelect"] == 2){
         array = array.filter((card) => card.precio > 500);
       }
-      if(aplicado["datoPorSelect"] == 3){
-         return array
-      }
     }
     if(array.length=== 0){
       contenedorCards.innerHTML= contenedorCards.innerHTML =` 
@@ -128,9 +126,8 @@ function filtrarFn(especialidad, valor, array) {
 
 async function capturar() {
   try {
-    let api = await fetch("https://apipetshop.herokuapp.com/api/articulos");
+    let api = await fetch("../data/articulos.json");
     var data = await api.json();
-    data = data.response;
     let juguetes = data.filter((e) => e.tipo === "Juguete");
     imprimir(condicionStockMayor(juguetes), condicionPocoStock(juguetes));
     searchBar.addEventListener("keyup", (evento) => {
@@ -153,9 +150,8 @@ function apreta(obj){
 
   async function capturar1(){
     try{
-      let api = await fetch("https://apipetshop.herokuapp.com/api/articulos");
+      let api = await fetch("../data/articulos.json");
       let data = await api.json();
-      data = data.response;
       array=array.concat(data.filter(e=>e._id.includes(obj)))
       localStorage.setItem("productos",JSON.stringify(array))
     }

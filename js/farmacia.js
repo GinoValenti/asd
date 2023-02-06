@@ -1,5 +1,4 @@
 let contenedorCards = document.getElementById("contenedor-cards");
-let contenedorSelect = document.getElementById("contenedor-select");
 let searchBar = document.getElementById("searchBar");
 let select = document.getElementById("pet-items-select");
 let aplicado = {};
@@ -111,9 +110,6 @@ function filtrarFn(especialidad, valor, array) {
       if(aplicado["datoPorSelect"] == 2){
         array = array.filter((card) => card.precio > 500);
       }
-      if(aplicado["datoPorSelect"] == 3){
-         return array
-      }
     }
     if(array.length=== 0){
       contenedorCards.innerHTML= contenedorCards.innerHTML =` 
@@ -128,9 +124,8 @@ function filtrarFn(especialidad, valor, array) {
 
 async function capturar() {
   try {
-    let api = await fetch("https://apipetshop.herokuapp.com/api/articulos");
+    let api = await fetch("../data/articulos.json");
     var data = await api.json();
-    data = data.response;
     let juguetes = data.filter((e) => e.tipo === "Medicamento");
     imprimir(condicionStockMayor(juguetes), condicionPocoStock(juguetes));
     searchBar.addEventListener("keyup", (evento) => {
@@ -153,9 +148,8 @@ function apreta(obj){
 
   async function capturar1(){
     try{
-      let api = await fetch("https://apipetshop.herokuapp.com/api/articulos");
+      let api = await fetch("../data/articulos.json");
       let data = await api.json();
-      data = data.response;
       array=array.concat(data.filter(e=>e._id.includes(obj)))
       localStorage.setItem("Medicamentos",JSON.stringify(array))
     }
